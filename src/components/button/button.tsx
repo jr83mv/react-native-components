@@ -3,32 +3,63 @@ import PropTypes from 'prop-types';
 import {StyleSheet, Text, TouchableOpacity} from 'react-native';
 
 const Button = (props: any) => {
-  let {appearance, status, label, onPress, size, color} = props;
+  let {variant, disabled, label, onPress, size, color} = props;
 
   return (
     <TouchableOpacity
+      disabled={disabled}
       style={StyleSheet.flatten([
-        getButtonStyle(appearance, status, color, size),
-        {alignSelf: size !== 'large' ? 'center' : 'auto'},
+        getButtonStyle(variant, disabled, color, size),
+        {alignSelf: 'center'},
         (onPress = {onPress}),
-      ])}
-      disabled={status === 'inactive'}>
-      <Text style={StyleSheet.flatten([getButtonTextStyle(appearance, color)])}>
+      ])}>
+      <Text
+        style={StyleSheet.flatten([
+          getButtonTextStyle(variant, color, disabled),
+        ])}>
         {label}
       </Text>
     </TouchableOpacity>
   );
 };
 
+const textHelper = (variant: string, color: string) => {
+  if (variant === 'filled') {
+    return colorCode.white;
+  } else if (variant === 'default') {
+    return colorCode.black;
+  } else {
+    return colorCode['filled' + color];
+  }
+};
+
+const bgHelper = (variant: string, color: string) => {
+  if (variant === 'filled' || variant === 'light') {
+    return colorCode[variant + color];
+  } else {
+    return colorCode.white;
+  }
+};
+
+const borderHelper = (variant: string, color: string) => {
+  if (variant === 'outline') {
+    return colorCode['filled' + color];
+  } else if (variant === 'default') {
+    return colorCode.diabledText;
+  } else {
+    return bgHelper(variant, color);
+  }
+};
+
 Button.propTypes = {
-  appearance: PropTypes.oneOf([
+  variant: PropTypes.oneOf([
     'filled',
     'outlined',
     'light',
     'default',
     'subtle',
   ]),
-  status: PropTypes.oneOf(['active', 'inactive']),
+  disabled: PropTypes.bool,
   label: PropTypes.string,
   onPress: PropTypes.func,
   size: PropTypes.oneOf([
@@ -42,177 +73,34 @@ Button.propTypes = {
 };
 
 Button.defaultProps = {
-  appearance: 'default',
-  status: 'active',
+  variant: 'default',
+  disabled: false,
   label: 'Button',
   onPress: () => {},
   size: 'large',
-  color: 'blue',
+  color: 'red',
 };
 
-const stylesCode: any = {
-  blue: {
-    outline: {
-      backgroundColor: 'white',
-      borderColor: '#228BE6',
-      textColor: '#228BE6',
-    },
-    filled: {
-      backgroundColor: '#228BE6',
-      borderColor: '#228BE6',
-      textColor: 'white',
-    },
-    subtle: {
-      backgroundColor: 'white',
-      borderColor: 'white',
-      textColor: '#228BE6',
-    },
-    light: {
-      backgroundColor: '#E7F5FF',
-      borderColor: '#E7F5FF',
-      textColor: '#228BE6',
-    },
-    default: {
-      backgroundColor: 'white',
-      borderColor: '#CED4DA',
-      textColor: 'black',
-    },
-  },
-  black: {
-    outline: {
-      backgroundColor: 'white',
-      borderColor: '#25262B',
-      textColor: '#25262B',
-    },
-    filled: {
-      backgroundColor: '#25262B',
-      borderColor: '#25262B',
-      textColor: 'white',
-    },
-    subtle: {
-      backgroundColor: 'white',
-      borderColor: 'white',
-      textColor: '#25262B',
-    },
-    light: {
-      backgroundColor: '#C1C2C5',
-      borderColor: '#C1C2C5',
-      textColor: '#25262B',
-    },
-    default: {
-      backgroundColor: 'white',
-      borderColor: '#CED4DA',
-      textColor: 'black',
-    },
-  },
-  red: {
-    outline: {
-      backgroundColor: 'white',
-      borderColor: '#FA5252',
-      textColor: '#FA5252',
-    },
-    filled: {
-      backgroundColor: '#FA5252',
-      borderColor: '#FA5252',
-      textColor: 'white',
-    },
-    subtle: {
-      backgroundColor: 'white',
-      borderColor: 'white',
-      textColor: '#FA5252',
-    },
-    light: {
-      backgroundColor: '#FFF5F5',
-      borderColor: '#FFF5F5',
-      textColor: '#FA5252',
-    },
-    default: {
-      backgroundColor: 'white',
-      borderColor: '#CED4DA',
-      textColor: 'black',
-    },
-  },
-  grey: {
-    outline: {
-      backgroundColor: 'white',
-      borderColor: '#868E96',
-      textColor: '#868E96',
-    },
-    filled: {
-      backgroundColor: '#868E96',
-      borderColor: '#868E96',
-      textColor: 'white',
-    },
-    subtle: {
-      backgroundColor: 'white',
-      borderColor: 'white',
-      textColor: '#868E96',
-    },
-    light: {
-      backgroundColor: '#F8F9FA',
-      borderColor: '#F8F9FA',
-      textColor: '#868E96',
-    },
-    default: {
-      backgroundColor: 'white',
-      borderColor: '#CED4DA',
-      textColor: 'black',
-    },
-  },
-  orange: {
-    outline: {
-      backgroundColor: 'white',
-      borderColor: '#FD7E14',
-      textColor: '#FD7E14',
-    },
-    filled: {
-      backgroundColor: '#FD7E14',
-      borderColor: '#FD7E14',
-      textColor: 'white',
-    },
-    subtle: {
-      backgroundColor: 'white',
-      borderColor: 'white',
-      textColor: '#FD7E14',
-    },
-    light: {
-      backgroundColor: '#FFF4E6',
-      borderColor: '#FFF4E6',
-      textColor: '#FD7E14',
-    },
-    default: {
-      backgroundColor: 'white',
-      borderColor: '#CED4DA',
-      textColor: 'black',
-    },
-  },
-  green: {
-    outline: {
-      backgroundColor: 'white',
-      borderColor: '#40C057',
-      textColor: '#40C057',
-    },
-    filled: {
-      backgroundColor: '#40C057',
-      borderColor: '#40C057',
-      textColor: 'white',
-    },
-    subtle: {
-      backgroundColor: 'white',
-      borderColor: 'white',
-      textColor: '#40C057',
-    },
-    light: {
-      backgroundColor: '#EBFBEE',
-      borderColor: '#EBFBEE',
-      textColor: '#40C057',
-    },
-    default: {
-      backgroundColor: 'white',
-      borderColor: '#CED4DA',
-      textColor: 'black',
-    },
-  },
+const colorCode: any = {
+  white: 'white',
+  black: 'black',
+
+  filledblue: '#228BE6',
+  filledred: '#FA5252',
+  filledgrey: '#868E96',
+  filledblack: '#25262B',
+  filledorange: '#FD7E14',
+  filledgreen: '#40C057',
+
+  lightblue: '#E7F5FF',
+  lightred: '#FFF5F5',
+  lightgrey: '#F8F9FA',
+  lightblack: '#C1C2C5',
+  lightorange: '#FFF4E6',
+  lightgreen: '#EBFBEE',
+
+  disabledBg: '#E9ECEF',
+  diabledText: '#ADB5BD',
 };
 
 const sizeCode: any = {
@@ -239,8 +127,8 @@ const sizeCode: any = {
 };
 
 const getButtonStyle = (
-  appearance: string,
-  status: string,
+  variant: string,
+  disabled: boolean,
   color: string,
   size: string,
 ) => {
@@ -251,8 +139,12 @@ const getButtonStyle = (
       flexDirection: 'row',
       display: 'flex',
       justifyContent: 'center',
-      backgroundColor: stylesCode[color][appearance].backgroundColor,
-      borderColor: stylesCode[color][appearance].borderColor,
+      backgroundColor: disabled
+        ? colorCode.disabledBg
+        : bgHelper(variant, color),
+      borderColor: disabled
+        ? colorCode.disabledBg
+        : borderHelper(variant, color),
       borderWidth: 1,
       height: sizeCode[size].height,
       width: sizeCode[size].width,
@@ -262,13 +154,16 @@ const getButtonStyle = (
   return buttonStyle;
 };
 
-const getButtonTextStyle = (appearance: string, color: string) => {
+const getButtonTextStyle = (
+  variant: string,
+  color: string,
+  disabled: string,
+) => {
   const textStyle = [
     {
-      color: stylesCode[color][appearance].textColor,
+      color: disabled ? colorCode.disabledText : textHelper(variant, color),
     },
   ];
-
   return textStyle;
 };
 
