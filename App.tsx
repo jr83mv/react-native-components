@@ -7,6 +7,7 @@ import Radio from './src/components/radio/radio';
 import Rating from './src/components/rating/rating';
 import Switch from './src/components/switch/switch';
 import Input from './src/components/input/input';
+import Select from './src/components/select/select';
 
 function App(): JSX.Element {
   return (
@@ -44,8 +45,28 @@ function App(): JSX.Element {
         disabled={false}
       />
       <View style={{margin: 10}}></View>
-      <Input title={'hi'} disabled={false} size={'extra large'} description={'ibijibijwebcw'} error={true} variant={'filled'} icon={require('./src/assests/starSelected.png')}/>
+      <Input
+        title={'hi'}
+        disabled={false}
+        size={'extra large'}
+        description={'ibijibijwebcw'}
+        error={true}
+        variant={'filled'}
+        icon={require('./src/assests/starSelected.png')}
+      />
+      <View style={{margin: 10}}></View>
+      <Select
+        disabled={false}
+        options={[
+          {label: 'Apple', value: 'apple'},
+          {label: 'Banana', value: 'banana'},
+          {label: 'Orange', value: 'orange'},
+          {label: 'Grapes', value: 'grapes'},
+        ]}
+        variant={'default'}
+        error={true}
+      />
     </SafeAreaView>
   );
-} 
+}
 export default App;
