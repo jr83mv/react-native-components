@@ -2,8 +2,8 @@ import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 
-const CheckBox = (props: any) => {
-  const {checked, setChecked, size, radius, disabled, color, label} = props;
+const Radio = (props: any) => {
+  const {checked, setChecked, size, disabled, color, label} = props;
 
   const [isChecked, setIsChecked] = useState(checked);
 
@@ -18,17 +18,13 @@ const CheckBox = (props: any) => {
         disabled={disabled}
         onPress={handleToggle}
         style={StyleSheet.flatten([
-          getCheckBoxStyleChecked(radius, disabled, color, size, isChecked),
+          getradioStyleChecked(disabled, color, size, isChecked),
           {alignSelf: size !== 'large' ? 'center' : 'auto'},
         ])}>
         {isChecked && (
           <Image
             style={StyleSheet.flatten([getImageStyle(size)])}
-            source={
-              disabled
-                ? require('../../assests/checkDisabled.png')
-                : require('../../assests/checkEnabled.png')
-            }
+            source={require('../../assests/dot.png')}
           />
         )}
       </TouchableOpacity>
@@ -57,7 +53,7 @@ const borderHelper = (color: string, isChecked: boolean, disabled: boolean) => {
   }
 };
 
-CheckBox.propTypes = {
+Radio.propTypes = {
   checked: PropTypes.bool,
   disabled: PropTypes.bool,
   setChecked: PropTypes.func,
@@ -69,22 +65,14 @@ CheckBox.propTypes = {
     'extra large',
     'extra small',
   ]),
-  radius: PropTypes.oneOf([
-    'large',
-    'medium',
-    'small',
-    'extra large',
-    'extra small',
-  ]),
   color: PropTypes.oneOf(['red', 'black', 'grey', 'blue', 'orange', 'green']),
 };
 
-CheckBox.defaultProps = {
+Radio.defaultProps = {
   checked: false,
   disabled: false,
   setChecked: () => {},
   size: 'large',
-  radius: 'extra small',
   color: 'default',
 };
 
@@ -106,49 +94,41 @@ const colorCode: any = {
 
 const sizeCode: any = {
   'extra small': {
-    height: 30,
-    width: 16,
-    radius: 2,
+    size: 16,
+    dot: 6,
     font: 12,
   },
   small: {
-    height: 36,
-    width: 20,
-    radius: 4,
+    size: 20,
+    dot: 8,
     font: 14,
   },
   medium: {
-    height: 42,
-    width: 24,
-    radius: 8,
+    size: 24,
+    dot: 10,
     font: 16,
   },
   large: {
-    height: 50,
-    width: 30,
-    radius: 16,
+    size: 30,
+    dot: 14,
     font: 18,
   },
   'extra large': {
-    height: 60,
-    width: 36,
-    radius: 32,
+    size: 36,
+    dot: 16,
     font: 20,
   },
 };
 
-const getCheckBoxStyleChecked = (
-  radius: string,
+const getradioStyleChecked = (
   disabled: boolean,
   color: string,
   size: string,
   isChecked: boolean,
 ) => {
-  const checkBoxStyleChecked: any = [
+  const radioStyleChecked: any = [
     {
       alignItems: 'center',
-      gap: 5,
-      flexDirection: 'row',
       display: 'flex',
       justifyContent: 'center',
       backgroundColor: disabled
@@ -156,19 +136,19 @@ const getCheckBoxStyleChecked = (
         : bgHelper(color, isChecked),
       borderColor: borderHelper(color, isChecked, disabled),
       borderWidth: 1,
-      height: sizeCode[size].width,
-      width: sizeCode[size].width,
-      borderRadius: sizeCode[radius].radius,
+      height: sizeCode[size].size,
+      width: sizeCode[size].size,
+      borderRadius: 30,
     },
   ];
-  return checkBoxStyleChecked;
+  return radioStyleChecked;
 };
 
 const getImageStyle = (size: string) => {
   const imageStyle: any = [
     {
-      height: sizeCode[size].height / 1.5,
-      width: sizeCode[size].width / 1.5,
+      height: sizeCode[size].dot,
+      width: sizeCode[size].dot,
       resizeMode: 'contain',
     },
   ];
@@ -193,4 +173,4 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
-export default CheckBox;
+export default Radio;
