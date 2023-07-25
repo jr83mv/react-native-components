@@ -20,14 +20,14 @@ import Popover from './src/components/popover/popover';
 function App(): JSX.Element {
   return (
     <SafeAreaView>
-      {/* <Button
+      <Button
         variant={'light'}
         color={'blue'}
         size={'extra large'}
         label={'prime'}
         disabled={false}
       />
-      <View style={{margin: 10}}></View> */}
+      <View style={{margin: 10}}></View>
       <CheckBox
         color={'blue'}
         disabled={false}
@@ -53,7 +53,7 @@ function App(): JSX.Element {
         disabled={false}
       />
       <View style={{margin: 10}}></View>
-      {/* <Input
+      <Input
         title={'hi'}
         disabled={false}
         size={'extra large'}
@@ -62,7 +62,7 @@ function App(): JSX.Element {
         variant={'filled'}
         icon={require('./src/assests/starSelected.png')}
       />
-      <View style={{margin: 10}}></View> */}
+      <View style={{margin: 10}}></View>
       <Select
         disabled={false}
         options={[
@@ -81,10 +81,6 @@ function App(): JSX.Element {
       <View style={{margin: 10}}></View>
       <Progress size={'extra large'}/>
       <View style={{margin: 10}}></View>
-      {/* <Notification radius={'extra large'}/>
-      <View style={{margin: 10}}></View>
-      <Alert color={'green'} variant={'light'} close={true}/>
-      <View style={{margin: 10}}></View> */}
       <Menu/>
       <View style={{margin: 10}}></View>
       <Icon/>
