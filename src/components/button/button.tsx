@@ -54,7 +54,7 @@ const borderHelper = (variant: string, color: string) => {
 Button.propTypes = {
   variant: PropTypes.oneOf([
     'filled',
-    'outlined',
+    'outline',
     'light',
     'default',
     'subtle',

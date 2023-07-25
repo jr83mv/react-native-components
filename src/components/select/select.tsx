@@ -88,6 +88,7 @@ Select.propTypes = {
   ]),
   error: PropTypes.bool,
   icon: PropTypes.any,
+  options:PropTypes.any,
 };
 
 Select.defaultProps = {

@@ -8,18 +8,26 @@ import Rating from './src/components/rating/rating';
 import Switch from './src/components/switch/switch';
 import Input from './src/components/input/input';
 import Select from './src/components/select/select';
+import Badge from './src/components/badge/badge';
+import Indicator from './src/components/indicator/indicator';
+import Progress from './src/components/progress/progress';
+import Notification from './src/components/notification/notification';
+import Alert from './src/components/alert/alert';
+import Menu from './src/components/menu/menu';
+import Icon from './src/components/icon/icon';
+import Popover from './src/components/popover/popover';
 
 function App(): JSX.Element {
   return (
     <SafeAreaView>
-      <Button
+      {/* <Button
         variant={'light'}
         color={'blue'}
         size={'extra large'}
         label={'prime'}
         disabled={false}
       />
-      <View style={{margin: 10}}></View>
+      <View style={{margin: 10}}></View> */}
       <CheckBox
         color={'blue'}
         disabled={false}
@@ -45,7 +53,7 @@ function App(): JSX.Element {
         disabled={false}
       />
       <View style={{margin: 10}}></View>
-      <Input
+      {/* <Input
         title={'hi'}
         disabled={false}
         size={'extra large'}
@@ -54,7 +62,7 @@ function App(): JSX.Element {
         variant={'filled'}
         icon={require('./src/assests/starSelected.png')}
       />
-      <View style={{margin: 10}}></View>
+      <View style={{margin: 10}}></View> */}
       <Select
         disabled={false}
         options={[
@@ -66,6 +74,22 @@ function App(): JSX.Element {
         variant={'default'}
         error={true}
       />
+      <View style={{margin: 10}}></View>
+      <Badge color={'red'} variant={'dot'} size={'extra large'}/>
+      <View style={{margin: 10}}></View>
+      <Indicator border={true} radius={'extra small'}/>
+      <View style={{margin: 10}}></View>
+      <Progress size={'extra large'}/>
+      <View style={{margin: 10}}></View>
+      {/* <Notification radius={'extra large'}/>
+      <View style={{margin: 10}}></View>
+      <Alert color={'green'} variant={'light'} close={true}/>
+      <View style={{margin: 10}}></View> */}
+      <Menu/>
+      <View style={{margin: 10}}></View>
+      <Icon/>
+      <View style={{margin: 10}}></View>
+      <Popover/>
     </SafeAreaView>
   );
 }

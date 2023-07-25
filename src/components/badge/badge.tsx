@@ -1,22 +1,26 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {StyleSheet, Text, TouchableOpacity} from 'react-native';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 
-const Action = (props: any) => {
-  let {variant, disabled, onPress, size, color,isStyled} = props;
+const Badge = (props: any) => {
+  let {variant, disabled, label, onPress, size, color, radius} = props;
 
   return (
     <TouchableOpacity
       disabled={disabled}
       style={StyleSheet.flatten([
-        getActionStyle(isStyled,variant, disabled, color, size),
+        getBadgeStyle(variant, disabled, color, size),
         {alignSelf: 'center'},
         (onPress = {onPress}),
       ])}>
+      {variant === 'dot' && <View style={StyleSheet.flatten([
+          getDotStyle(color, disabled, size),
+        ])}></View>}
       <Text
         style={StyleSheet.flatten([
-          getActionTextStyle(isStyled,variant, color, disabled,size),
-        ])}>+
+          getBadgeTextStyle(variant, color, disabled, size),
+        ])}>
+        {label}
       </Text>
     </TouchableOpacity>
   );
@@ -25,7 +29,7 @@ const Action = (props: any) => {
 const textHelper = (variant: string, color: string) => {
   if (variant === 'filled') {
     return colorCode.white;
-  } else if (variant === 'default') {
+  } else if (variant === 'default' || variant === 'dot') {
     return colorCode.black;
   } else {
     return colorCode['filled' + color];
@@ -44,22 +48,16 @@ const borderHelper = (variant: string, color: string) => {
   if (variant === 'outline') {
     return colorCode['filled' + color];
   } else if (variant === 'default') {
-    return colorCode.disabledText;
+    return colorCode.white;
+  } else if (variant === 'dot') {
+    return colorCode.dot;
   } else {
     return bgHelper(variant, color);
   }
 };
 
-Action.propTypes = {
-    isStyled:PropTypes.bool,
-  variant: PropTypes.oneOf([
-    'transparent',
-    'filled',
-    'outline',
-    'light',
-    'default',
-    'subtle',
-  ]),
+Badge.propTypes = {
+  variant: PropTypes.oneOf(['filled', 'outline', 'light', 'dot']),
   disabled: PropTypes.bool,
   label: PropTypes.string,
   onPress: PropTypes.func,
@@ -73,11 +71,10 @@ Action.propTypes = {
   color: PropTypes.oneOf(['red', 'black', 'grey', 'blue', 'orange', 'green']),
 };
 
-Action.defaultProps = {
-    isStyled: false,
+Badge.defaultProps = {
   variant: 'default',
   disabled: false,
-  label: 'Action',
+  label: 'BADGE',
   onPress: () => {},
   size: 'large',
   color: 'red',
@@ -101,77 +98,96 @@ const colorCode: any = {
   lightorange: '#FFF4E6',
   lightgreen: '#EBFBEE',
 
-  disabledBg: '#F1F3F5',
-  disabledText: '#CED4DA',
+  disabledBg: '#E9ECEF',
+  diabledText: '#ADB5BD',
+  dot: '#DEE2E6',
 };
 
 const sizeCode: any = {
   'extra small': {
-    actionSize: 18,
-    iconSize: 12,
+    height: 16,
+    width: 44,
+    size: 9,
   },
   small: {
-    actionSize: 22,
-    iconSize: 14,
+    height: 18,
+    width: 52,
+    size: 10,
   },
   medium: {
-    actionSize: 28,
-    iconSize: 18,
+    height: 20,
+    width: 59,
+    size: 11,
   },
   large: {
-    actionSize: 34,
-    iconSize: 26,
+    height: 26,
+    width: 72,
+    size: 13,
   },
   'extra large': {
-    actionSize: 44,
-    iconSize: 34,
+    height: 32,
+    width: 89,
+    size: 16,
   },
 };
 
-const getActionStyle = (
-    isStyled:boolean,
+const getBadgeStyle = (
   variant: string,
   disabled: boolean,
   color: string,
   size: string,
 ) => {
-  const ActionStyle: any = [
+  const BadgeStyle: any = [
     {
       alignItems: 'center',
       borderRadius: 4,
       flexDirection: 'row',
       display: 'flex',
-      justifyContent: 'center',
-      backgroundColor: isStyled?(disabled
+      justifyContent: 'space-around',
+      backgroundColor: disabled
         ? colorCode.disabledBg
-        : bgHelper(variant, color)):colorCode.white,
-      borderColor: isStyled?(disabled
+        : bgHelper(variant, color),
+      borderColor: disabled
         ? colorCode.disabledBg
-        : borderHelper(variant, color)):colorCode.white,
-      borderWidth: 1,
-      height: sizeCode[size].actionSize,
-      width: sizeCode[size].actionSize,
+        : borderHelper(variant, color),
+      borderWidth: 2,
+      height: sizeCode[size].height,
+      width: sizeCode[size].width,
     },
   ];
 
-  return ActionStyle;
+  return BadgeStyle;
 };
 
-const getActionTextStyle = (
-    isStyled:boolean,
+const getBadgeTextStyle = (
   variant: string,
   color: string,
-  disabled: boolean,
-  size:string
+  disabled: string,
+  size: string,
 ) => {
-  const textStyle:any = [
+  const textStyle = [
     {
-      color:isStyled?( disabled ? colorCode.disabledText : textHelper(variant, color)):colorCode.black,
-      fontSize:sizeCode[size].iconSize,
-      fontWeight:700,
+      fontSize: sizeCode[size].size,
+      fontWeight: 700,
+      color: disabled ? colorCode.disabledText : textHelper(variant, color),
     },
   ];
   return textStyle;
 };
-
-export default Action;
+ 
+const getDotStyle = (
+    color: string,
+    disabled: string,
+    size: string,
+  ) => {
+    const textStyle = [
+      {
+        height:6,
+        width:6,
+        borderRadius:30,
+        backgroundColor:colorCode['filled'+color],
+      },
+    ];
+    return textStyle;
+  };
+export default Badge;
